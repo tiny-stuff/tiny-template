@@ -19,19 +19,21 @@ else
   endif
 endif
 
-OBJ = src/calculator-adder.o
+OBJ = src/calculator_adder.o
 
 #
 # warnings
 # 
 
-WARNINGS=-Wall -Wextra -Wpendantic -Wbad-function-cast -Wcast-align -Wcast-qual -Wconversion -Wfloat-equal -Wnull-dereference -Wshadow -Wstack-protected -Wstrict-prototypes -Wswtich-enum -Wundef -Wvla-Wall -Wextra -Wpendantic -Wbad-function-cast -Wcast-align -Wcast-qual -Wconversion -Wfloat-equal -Wnull-dereference -Wshadow -Wstack-protected -Wstrict-prototypes -Wswtich-enum -Wundef -Wvla
-WARNINGS_GCC=-Wduplicated-branches -Wduplicated-cond -Wformat-signedness -Wjump-misses-init -Wlogical-op -Wnested-externs -Wnormalized -Wold-style-definition -Wshift-negative-value -Wshift-overflow=2 -Wstrict-overflow=-3 -Wsuggest-attribute=printf -Wsuggest-attribute=malloc -Wtraditional-conversion -Wtrampolines -Wwrite-strings
-WARNINGS_CLANG=-Warray-bounds-pointer-arithmetic -Wassign-enum -Wcast-function-type -Wcomma -Wcovered-switch-default -Wduplicate-enum -Widiomatic-parentheses -Wloop-analysis -Wformat-non-iso -Wformat-pedantic -Wformat-type-confusion -Wfour-char-constants  -Wimplicit-fallthrough -Wpointer-arith -Wpragmas-Wreserved-identifier -Wshift-sign-overflow -Wsigned-enum-bitfield -Wstatic-in-inline  -Wtautological-constant-in-range-compare  -Wthread-safety -Wunreachable-code -Wunreachable-code-aggressive -Wunused-macros -Wused-but-marked-unused -Wvariadic-macros -Wzero-as-null-pointer-constant
-ifeq ($(CC),gcc)
-  WARNINGS += $(WARNINGS_GCC)
-else
+WARNINGS=-Wall -Wextra -Wpedantic -Wbad-function-cast -Wcast-align -Wcast-qual -Wconversion -Wfloat-equal -Wnull-dereference -Wshadow -Wstack-protector -Wswitch-enum -Wundef -Wvla
+WARNINGS_GCC=-Wduplicated-branches -Wduplicated-cond -Wformat-signedness -Wjump-misses-init -Wlogical-op -Wnested-externs -Wnormalized -Wold-style-definition -Wshift-negative-value -Wshift-overflow=2 -Wstrict-overflow=3 -Wsuggest-attribute=malloc -Wtraditional-conversion -Wtrampolines -Wwrite-strings -Wsuggest-attribute=pure -Wsuggest-attribute=const -Wsuggest-attribute=format -Wsuggest-attribute=cold -Wsuggest-attribute=returns_nonnull
+WARNINGS_CLANG=-Warray-bounds-pointer-arithmetic -Wassign-enum -Wcast-function-type -Wcomma -Wcovered-switch-default -Wduplicate-enum -Widiomatic-parentheses -Wloop-analysis -Wformat-non-iso -Wformat-pedantic -Wformat-type-confusion -Wfour-char-constants  -Wimplicit-fallthrough -Wpointer-arith -Wreserved-identifier -Wshift-sign-overflow -Wsigned-enum-bitfield -Wstatic-in-inline  -Wtautological-constant-in-range-compare  -Wthread-safety -Wunreachable-code -Wunreachable-code-aggressive -Wunused-macros -Wused-but-marked-unused -Wvariadic-macros -Wzero-as-null-pointer-constant -Wno-strict-prototypes
+
+COMPILER_ID := $(shell $(CC) -v 2>&1 | grep clang)
+ifeq ($(findstring clang,$(COMPILER_ID)),clang)
   WARNINGS += $(WARNINGS_CLANG)
+else
+  WARNINGS += $(WARNINGS_GCC)
 endif
 
 #
