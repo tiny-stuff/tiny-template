@@ -67,7 +67,7 @@ ifndef DEV
 endif
 
 $(PROJECT)-test: CFLAGS=-D_XOPEN_SOURCE=700 $(INCLUDES) -O0 -ggdb -fno-inline-functions -fstack-protector-strong -fno-common $(WARNINGS)
-$(PROJECT)-test: tests/main.o $(OBJ)
+$(PROJECT)-test: tests/tests.o $(OBJ)
 	$(CC) -o $@ $^ $(LDFLAGS)
 
 check: $(PROJECT)-test
@@ -110,7 +110,7 @@ bear:
 
 clean:
 	find . -type f -name '*.[od]' -exec rm {} +
-	rm -f $(PROJECT)
+	rm -f $(PROJECT) $(PROJECT)-test
 
 install: neblina
 	install $(PROJECT) /usr/local/bin/$(PROJECT)
