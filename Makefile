@@ -17,19 +17,19 @@ OBJ = $(OBJ:.o=.obj)
 # Flags
 #
 
-WARNINGS=/W4 /WX /analyze /w14445 /w14640 /w14242 /w4191 /w14263 /w14265 /w4061 /w4702
+WARNINGS=/W4 /WX /analyze /w14445 /w14640 /w14242 /w14263 /w14265
 
-INCLUDES=/I. /Isrc
-CFLAGS = /std:c17 /DSTDC_WANT_LIB_EXT2__=1 /nologo /MD /D_CRT_SECURE_NO_WARNINGS $(INCLUDES) $(WARNINGS)
+INCLUDES = /I. /Isrc
+CFLAGS = /std:c17 /DSTDC_WANT_LIB_EXT2__=1 /nologo /MD /D_CRT_SECURE_NO_WARNINGS $(INCLUDES)
 
 !IFDEF DEV
-CPPFLAGS = $(CPPFLAGS) /Od /Zi /GS /W4
+CFLAGS = $(CFLAGS) /Od /Zi /GS /W4 $(WARNINGS)
 !ELSE
-CPPFLAGS = $(CPPFLAGS) /O2 /GL /GS /D_FORTIFY_SOURCE=2
-LDFLAGS  = /LTCG /INCREMENTAL:NO /OPT:REF /OPT:ICF
+CFLAGS = $(CFLAGS) /O2 /GL /GS /D_FORTIFY_SOURCE=2
+LDFLAGS = /LTCG /INCREMENTAL:NO /OPT:REF /OPT:ICF
 !ENDIF
 
-CPPFLAGS_CONTRIB = /nologo /MD /I. /O2 /GL
+CFLAGS_CONTRIB = /nologo /MD /I. /O2 /GL
 
 #
 # Targets
@@ -38,20 +38,20 @@ CPPFLAGS_CONTRIB = /nologo /MD /I. /O2 /GL
 .SUFFIXES: .c .obj
 
 .c.obj:
-	cl /c $(CPPFLAGS) /Fo$@ $<
+	cl /c $(CFLAGS) /Fo$@ $<
 
 $(PROJECT).exe: src\main.obj $(OBJ)
-	link /nologo $(LDFLAGS) /OUT:$@ $(OBJ)
+	link /nologo $(LDFLAGS) /OUT:$@ $**
 
 $(PROJECT)-test.exe: tests\tests.obj $(OBJ)
-	link /nologo $(LDFLAGS) /OUT:$@ $(OBJ)
+	link /nologo $(LDFLAGS) /OUT:$@ $**
 
-check: $(PROJECT)-test
+check: $(PROJECT)-test.exe
 	$(PROJECT)-test.exe
 
 dev:
 	nmake all DEV=1
 
 clean:
-	del $(PROJECT).exe $(PROJECT)-test.exe
+	del $(PROJECT).exe $(PROJECT)-test.exe src\main.obj tests\tests.obj
 	cmd /V:ON /C "set P=$(OBJ) & del !P:/=\!"
