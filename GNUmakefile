@@ -19,7 +19,7 @@ else
   endif
 endif
 
-OBJ = src/calculator_adder.o
+include objects.mk
 
 #
 # warnings
