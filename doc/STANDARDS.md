@@ -49,7 +49,8 @@ Warnings:
 Function naming:
  - Module_object_verb
  - Standard verbs:
-   - create / destroy: allocate a new object
+   - create / destroy: allocate a new object (should call init/finalize)
+   - init / finalize: initialize a allocated object
 
 File naming:
  - module.h
